@@ -22,6 +22,6 @@ public class Post {
 
     @Override
     public String toString() {
-        return "Text: " + text + "\nSummary: " + summary;
+        return "Text: " + text + " ||| Summary: " + summary;
     }
 }
