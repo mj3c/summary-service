@@ -1,11 +1,13 @@
 package com.example.web;
 
 import com.example.web.messaging.Post;
+import com.example.web.messaging.PostSender;
 import com.example.web.processing.PostSummaryCreator;
 import com.example.web.requests.PostReqBody;
 import com.example.web.requests.PostReqBodyValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -22,6 +24,9 @@ import java.util.Map;
 @RestController
 public class SummariesController {
     private final static Logger logger = LoggerFactory.getLogger(SummariesController.class);
+
+    @Autowired
+    private PostSender postSender;
 
     @InitBinder
     protected void initBinder(WebDataBinder binder) {
@@ -40,8 +45,7 @@ public class SummariesController {
     @PostMapping(value = "/summaries", consumes = "application/json")
     public ResponseEntity postSummary(@Valid @RequestBody PostReqBody postReqBody) {
         Post post = PostSummaryCreator.create(postReqBody.getText(), Integer.parseInt(postReqBody.getLength()));
-        logger.info("New post text: {}", post.getText());
-        logger.info("New post summary: {}", post.getSummary());
+        postSender.sendPost(post);
         return new ResponseEntity(HttpStatus.OK);
     }
 
