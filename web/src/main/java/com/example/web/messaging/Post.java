@@ -1,4 +1,4 @@
-package com.example.web;
+package com.example.web.messaging;
 
 public class Post {
     private String text;
