@@ -2,6 +2,8 @@ package com.example.web;
 
 import com.example.web.messaging.Post;
 import com.example.web.messaging.PostSender;
+import com.example.web.persistence.PostDocument;
+import com.example.web.persistence.SummaryRepository;
 import com.example.web.processing.PostSummaryCreator;
 import com.example.web.requests.PostReqBody;
 import com.example.web.requests.PostReqBodyValidator;
@@ -16,10 +18,10 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 public class SummariesController {
@@ -28,6 +30,9 @@ public class SummariesController {
     @Autowired
     private PostSender postSender;
 
+    @Autowired
+    private SummaryRepository summaryRepository;
+
     @InitBinder
     protected void initBinder(WebDataBinder binder) {
         binder.setValidator(new PostReqBodyValidator());
@@ -35,11 +40,7 @@ public class SummariesController {
 
     @GetMapping(value = "/summaries", produces = "application/json")
     public List<String> getSummaries() {
-        List<String> summaries = new ArrayList<>();
-        summaries.add("summary1");
-        summaries.add("summary2");
-        summaries.add("summary3");
-        return summaries;
+        return summaryRepository.findSummaryAndExcludeId().stream().map(PostDocument::getSummary).collect(Collectors.toList());
     }
 
     @PostMapping(value = "/summaries", consumes = "application/json")
