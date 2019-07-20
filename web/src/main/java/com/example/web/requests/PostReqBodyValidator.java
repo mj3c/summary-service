@@ -3,25 +3,25 @@ package com.example.web.requests;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
-public class PostBodyValidator implements Validator {
+public class PostReqBodyValidator implements Validator {
     @Override
     public boolean supports(Class<?> aClass) {
-        return PostBody.class.equals(aClass);
+        return PostReqBody.class.equals(aClass);
     }
 
     @Override
     public void validate(Object o, Errors errors) {
-        PostBody postBody = (PostBody) o;
-        if (postBody.getText() == null) {
+        PostReqBody postReqBody = (PostReqBody) o;
+        if (postReqBody.getText() == null) {
             errors.rejectValue("text", "field.missing", "This field is required");
-        } else if (postBody.getText().trim().isEmpty()) {
+        } else if (postReqBody.getText().trim().isEmpty()) {
             errors.rejectValue("text", "text.empty", "Value must not be an empty string");
         }
-        if (postBody.getLength() == null) {
+        if (postReqBody.getLength() == null) {
             errors.rejectValue("length", "field.missing", "This field is required");
         } else {
             try {
-                int length = Integer.parseInt(postBody.getLength());
+                int length = Integer.parseInt(postReqBody.getLength());
                 if (length <= 0) {
                     errors.rejectValue("length", "number.negativeOrZero", "Value must be positive");
                 }

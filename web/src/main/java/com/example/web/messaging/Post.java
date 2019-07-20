@@ -4,7 +4,7 @@ public class Post {
     private String text;
     private String summary;
 
-    Post(String text, String summary) {
+    public Post(String text, String summary) {
         this.text = text;
         this.summary = summary;
     }

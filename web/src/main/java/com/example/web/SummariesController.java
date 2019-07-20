@@ -1,7 +1,9 @@
 package com.example.web;
 
-import com.example.web.requests.PostBody;
-import com.example.web.requests.PostBodyValidator;
+import com.example.web.messaging.Post;
+import com.example.web.processing.PostSummaryCreator;
+import com.example.web.requests.PostReqBody;
+import com.example.web.requests.PostReqBodyValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -23,7 +25,7 @@ public class SummariesController {
 
     @InitBinder
     protected void initBinder(WebDataBinder binder) {
-        binder.setValidator(new PostBodyValidator());
+        binder.setValidator(new PostReqBodyValidator());
     }
 
     @GetMapping(value = "/summaries", produces = "application/json")
@@ -36,8 +38,10 @@ public class SummariesController {
     }
 
     @PostMapping(value = "/summaries", consumes = "application/json")
-    public ResponseEntity postSummary(@Valid @RequestBody PostBody postBody) {
-        logger.info("Text: {} ||| Length: {}", postBody.getText(), postBody.getLength());
+    public ResponseEntity postSummary(@Valid @RequestBody PostReqBody postReqBody) {
+        Post post = PostSummaryCreator.create(postReqBody.getText(), Integer.parseInt(postReqBody.getLength()));
+        logger.info("New post text: {}", post.getText());
+        logger.info("New post summary: {}", post.getSummary());
         return new ResponseEntity(HttpStatus.OK);
     }
 

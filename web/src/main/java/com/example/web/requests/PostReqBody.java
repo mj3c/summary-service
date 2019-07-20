@@ -1,6 +1,6 @@
 package com.example.web.requests;
 
-public class PostBody {
+public class PostReqBody {
     private String text;
     private String length;
 
