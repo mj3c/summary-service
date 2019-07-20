@@ -1,4 +1,4 @@
-package com.example.worker;
+package com.example.worker.messaging;
 
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.amqp.core.DirectExchange;

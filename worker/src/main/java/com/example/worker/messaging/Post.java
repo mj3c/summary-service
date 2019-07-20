@@ -1,4 +1,4 @@
-package com.example.worker;
+package com.example.worker.messaging;
 
 public class Post {
     private String text;
