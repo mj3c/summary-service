@@ -1,0 +1,45 @@
+version: '3.1'
+
+services:
+  rabbitmq:
+    image: rabbitmq
+    container_name: summary-service.rabbitmq
+    networks:
+      ss_network:
+        aliases:
+          - ss-rabbitmq
+
+  mongodb:
+    image: mongo
+    container_name: summary-service.mongodb
+    networks:
+      ss_network:
+        aliases:
+          - ss-mongodb
+
+  web:
+    image: summary-service/web
+    container_name: summary-service.web
+    ports:
+      - 8080:8080
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+    depends_on:
+      - rabbitmq
+      - mongodb
+    networks:
+      - ss_network
+
+  worker:
+    image: summary-service/worker
+    container_name: summary-service.worker
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+    depends_on:
+      - rabbitmq
+      - mongodb
+    networks:
+      - ss_network
+
+networks:
+  ss_network:
