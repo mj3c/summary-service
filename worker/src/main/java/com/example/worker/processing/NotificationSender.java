@@ -23,7 +23,7 @@ public class NotificationSender {
 
     public void send(Post post) {
         Map<String, String> message = new HashMap<>();
-        message.put("text", "New post published:\n*Summary*: " + post.getSummary());
+        message.put("text", "New post published!\n*Summary*: " + post.getSummary());
         try {
             httpClient
                     .preparePost(slackHook)
